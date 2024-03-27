@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+      ::placeholder{
+          color: azure;
+      }
+  </style>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+    <section>
+      <div class="form-container">
+        <form action="/lhome" method="post">
+          <h2>Login</h2>
+          <div class="form-group">
+            <input type="text" id="name" name="username" placeholder="Name:" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <input type="password" id="password" name="password" placeholder="Password:" required>
+          </div>
+          <button type="submit" class="submit-btn">Login</button>
+          <div class="register-link"><p>Don't have an account? <a class="link" href="/signup">SignUp</a></p></div>
+        </form>
+      </div>
+    </section>
+    
+</body>
+</html>

@@ -1,0 +1,94 @@
+/* Global Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #89aed2; /* Light grey background */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.form-container {
+  background-color: #dbefac; /* White background */
+  padding: 60px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  animation: slideIn 0.5s forwards, fadeIn 0.5s forwards;
+  opacity: 0;
+}
+
+.form-container h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.form-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  
+  transform: translateY(-20px);
+  opacity: 0;
+  animation: slideIn 0.5s forwards, fadeIn 0.5s forwards;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  margin-right: 20px;
+  color: #666;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 200px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.submit-btn {
+  background-color: #007bff; /* Blue submit button */
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+.link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* Animations */
+@keyframes slideIn {
+  from {
+      transform: translateY(-50px);
+  }
+  to {
+      transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+  }
+  to {
+      opacity: 1;
+  }
+}
