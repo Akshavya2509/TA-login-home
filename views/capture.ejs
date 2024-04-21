@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Video Capture</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+
+        video {
+            border: 2px solid #333;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 16px;
+            margin: 5px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+      /* Additional custom styles for dark mode */
+      body {
+          background-color: #121212; /* Dark background color */
+          color: #ffffff; /* Light text color */
+          padding-top: 70px; /* Adjusted to accommodate fixed navbar */
+          font-family: 'Google Sans', 'Helvetica Neue', sans-serif; /* Apply font family */
+      }
+      .navbar {
+          background-color: #121212 !important; /* Dark navbar background */
+      }
+      .navbar-brand, .navbar-nav .nav-link {
+          color: #ffffff !important; /* Light text color for navbar items */
+      }
+      .navbar-nav .nav-link:hover {
+          color: #ffffff !important; /* Light text color for navbar items on hover */
+      }
+      .navbar-nav .nav-item.active .nav-link {
+          color: #007bff !important; /* Change color of active navbar item */
+      }
+      .jumbotron {
+          background-color: #121212; /* Dark background for jumbotron */
+      }
+      .animated-text {
+          font-size: 48px;
+          font-weight: bold; /* Set font weight to bold */
+          background: linear-gradient(to right, #4285f4, #d96570, #9b72cb, #d96570);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-size: 400%;
+          animation: flowColors 12s infinite;
+      }
+      @keyframes flowColors {
+          0% {
+              background-position: 0% 50%;
+          }
+          50% {
+              background-position: 100% 50%;
+          }
+          100% {
+              background-position: 0% 100%;
+          }
+      }
+      /* Additional style for animated border */
+      .animated-border {
+          border: 1px solid transparent; /* Initial transparent border */
+          border-radius: 10px; /* Rounded border */
+          padding: 25px; /* Add some padding */
+          animation: borderColors 12s infinite; /* Apply animation */
+      }
+      .animated-border-search {
+          border: 1px solid transparent; /* Initial transparent border */
+          border-radius: 10px; /* Rounded border */
+          animation: borderColors 12s infinite; /* Apply animation */
+      }
+      @keyframes borderColors {
+          0% {
+              border-color: #d96570; /* Start color */
+          }
+          15% {
+              border-color: #9b72cb; /* Mid color */
+          }
+          30% {
+              border-color: #d96570; /* Mid color */
+          }
+          60% {
+              border-color: #4285f4; /* End color */
+          }
+          78% {
+              border-color: #d96570; /* Mid color */
+          }
+          100% {
+              border-color: #9b72cb; /* Start color */
+          }
+      }
+
+      /* Additional style for horizontal blocks */
+      .horizontal-blocks {
+          display: flex;
+          justify-content: space-evenly;
+          margin-top: 50px;
+      }
+      .block {
+          width: 200px;
+          height: 200px;
+          background-color: #1e1f20;
+          border-radius: 10px;
+          margin-right: 5px;
+          padding: 20px;
+          box-sizing: border-box;
+      }
+      .block:hover {
+          transform: scale(1.1); /* Increase size by 10% */
+      }
+      .block p {
+          color: #ffffff;
+          text-align: center;
+      }
+      .block a {
+          width: 100%;
+          height: 100%;
+          text-decoration: none;
+          color: inherit;
+      }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top animated-border">
+    <div class="container">
+        <a class="navbar-brand" href="#" style="left:auto;">AgeGPT</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto"> <!-- Changed ml-auto to mr-auto -->
+                <li class="nav-item active">
+                    <a class="nav-link" href="http://localhost:5001/homePage">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-light my-2 my-sm-0 animated-border-search" type="submit" style="margin-right: 3px;">Search</button>
+                <button class="btn btn-outline-light my-2 my-sm-0 animated-border-search" type="submit" style="margin-left: 3px;"><a href="http://localhost:5001/signup">Logout</a></button>
+            </form>
+        </div>
+    </div>
+</nav>
+    <video style="margin-top:50px" id="video" width="640" height="480" autoplay></video>
+    <br>
+    <button id="startButton">Start Camera</button>
+    <button id="stopButton">Stop Camera</button>
+    <button id="captureButton">Capture Photo</button> <!-- Added capture button -->
+    <script>
+      const videoElement = document.getElementById('video');
+const startButton = document.getElementById('startButton');
+const stopButton = document.getElementById('stopButton');
+const captureButton = document.getElementById('captureButton');
+let stream;
+
+// Array to store characters from 'a' to 'z'
+const charArray = Array.from({length: 26}, (_, i) => String.fromCharCode('a'.charCodeAt(0) + i));
+
+// Iterator to track the index of the character in the charArray
+let iterator = 0;
+
+// Start camera
+startButton.addEventListener('click', async () => {
+    try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        videoElement.srcObject = stream;
+    } catch (error) {
+        console.error('Error accessing camera:', error);
+    }
+});
+
+// Stop camera
+stopButton.addEventListener('click', () => {
+    if (stream) {
+        const tracks = stream.getTracks();
+        tracks.forEach(track => track.stop());
+        videoElement.srcObject = null;
+    }
+});
+
+// Capture photo
+captureButton.addEventListener('click', () => {
+  if(stream){
+    const canvas = document.createElement('canvas');
+    canvas.width = videoElement.videoWidth;
+    canvas.height = videoElement.videoHeight;
+    canvas.getContext('2d').drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+    
+    // Convert canvas to data URL
+    const dataURL = canvas.toDataURL('image/png');
+
+    // Get the next character from the charArray
+    const fileName = charArray[iterator];
+    
+    // Increment the iterator for the next capture
+    iterator = (iterator + 1) % charArray.length;
+
+    // Create a temporary anchor element to trigger download
+    const link = document.createElement('a');
+    link.href = dataURL;
+    link.download = `${fileName}.png`; // Filename with the selected character
+    link.style.display = 'none';
+
+    // Append the anchor element to the body and trigger a click event
+    document.body.appendChild(link);
+    link.click();
+
+    // Clean up: remove the anchor element from the DOM
+    document.body.removeChild(link);
+  }
+});
+    </script>
+</body>
+</html>
