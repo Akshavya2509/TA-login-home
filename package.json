@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "bcrypt": "^5.1.0",
-    "ejs": "^3.1.9",
+    "ejs": "^3.1.10",
     "express.js": "^1.0.0",
     "mongoose": "^7.4.1"
   }

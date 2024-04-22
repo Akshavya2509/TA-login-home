@@ -128,7 +128,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto"> <!-- Changed ml-auto to mr-auto -->
                         <li class="nav-item active">
-                            <a class="nav-link" href="http://localhost:5001/homePage">Home <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="http://localhost:5001/homePage?id=<%=_id%>">Home <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Link</a>
@@ -162,22 +162,19 @@
                 <br>
                 <h4 class="display-4" style="text-align:center; font-weight: bold;color: #444746;">Let's predict your age!</h4>
             </div>
-            <!-- Your content goes here -->
-
-            <!-- Horizontal blocks -->
             <div class="horizontal-blocks">
                 <div class="block">
                     
-                    <a href="http://127.0.0.1:5000"style="text-align: center; color: #444746; padding-top: 70px; font-size: 15px;"><p id = "face-detection" style="text-align: center; color: #444746; padding-top: 30px; font-size: 15px;">Looking for your age predictor <%=Fname%>?<br><br> Predict your age here!</p></a>
+                    <a href="http://127.0.0.1:5000"style="text-align: center; color: #444746; padding-top: 70px; font-size: 15px;"><p id = "face-detection" style="text-align: center; color: #999; padding-top: 30px; font-size: 15px;">Looking for your age predictor <%=Fname%>?<br><br> Predict your age here!</p></a>
                 </div>
                 <div class="block">
-                    <a href="/capture" style="text-align: center; color: #444746; padding-top: 70px; font-size: 15px;"><p id = "capture-image" style="text-align: center; color: #444746; padding-top: 30px; font-size: 15px;">Want to take a picture for your next prediction <%=Fname%>? <br><br> Click Here!</p></a>
+                    <a href="/capture?id=<%=_id%>" style="text-align: center; color: #444746; padding-top: 70px; font-size: 15px;"><p id = "capture-image" style="text-align: center; color: #999; padding-top: 30px; font-size: 15px;">Want to take a picture for your next prediction <%=Fname%>? <br><br> Click Here!</p></a>
                 </div>
                 <div class="block">
-                    <p style="color: #444746; font-size: 20px;">Coming soon!</p>
+                    <a href="/feedback?id=<%=_id%>" style="text-align: center; color: #444746; padding-top: 70px; font-size: 15px;"><p id = "capture-image" style="text-align: center; color: #999; padding-top: 30px; font-size: 15px;">Do leave a feedback to help us improve.</p></a>
                 </div>
                 <div class="block">
-                    <p style="color: #444746; font-size: 20px;">Coming soon!</p>
+                    <a href="/feedback-page?id=<%=_id%>" style="text-align: center; color: #444746; padding-top: 70px; font-size: 15px;"><p id = "capture-image" style="text-align: center; color: #999; padding-top: 30px; font-size: 15px;">View all your past feedbacks here, <%=Fname%></p></a>
                 </div>
             </div>
             <br>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Video Capture</title>
+    <title>Your feedbacks</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -125,6 +125,16 @@
           padding: 20px;
           box-sizing: border-box;
       }
+      .feedback-block {
+          width: 45%;
+          height: 270px;
+          background-color: #222;
+          border-radius: 10px;
+          margin-top: 10px;
+          margin-right: 5px;
+          padding: 20px;
+          box-sizing: border-box;
+      }
       .block:hover {
           transform: scale(1.1); /* Increase size by 10% */
       }
@@ -139,9 +149,10 @@
           color: inherit;
       }
   </style>
+  <script src="/src/feedback.js"></script>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark fixed-top animated-border">
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top animated-border" style="margin-top: 10px">
     <div class="container">
         <a class="navbar-brand" href="#" style="left:auto;">AgeGPT</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -178,74 +189,48 @@
         </div>
     </div>
 </nav>
-    <video style="margin-top:50px" id="video" width="640" height="480" autoplay></video>
-    <br>
-    <button id="startButton">Start Camera</button>
-    <button id="stopButton">Stop Camera</button>
-    <button id="captureButton">Capture Photo</button> <!-- Added capture button -->
-    <script>
-      const videoElement = document.getElementById('video');
-const startButton = document.getElementById('startButton');
-const stopButton = document.getElementById('stopButton');
-const captureButton = document.getElementById('captureButton');
-let stream;
+<div style="margin-top: 20px;">
+    <div style="margin-top: 10px;" id="feedbacks-container">
 
-// Array to store characters from 'a' to 'z'
-const charArray = Array.from({length: 26}, (_, i) => String.fromCharCode('a'.charCodeAt(0) + i));
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-// Iterator to track the index of the character in the charArray
-let iterator = 0;
+<script>
+    function fetch(){
+        axios.get(`http://localhost:5001/fetchFeedback?id=<%=id%>`)
+        .then(fetchResponse => {
+          console.log('Fetched feedback data:', fetchResponse.data);
+          let feedbackContainer = document.getElementById("feedbacks-container")
+          for (let i = 0; i < fetchResponse.data?.length; i++) {
+  const feedback = fetchResponse.data[i];
 
-// Start camera
-startButton.addEventListener('click', async () => {
-    try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        videoElement.srcObject = stream;
-    } catch (error) {
-        console.error('Error accessing camera:', error);
+  // Create a new <div> element for each feedback entry
+  let innerChild = document.createElement('div');
+  innerChild.classList.add('feedback-block'); // Add a CSS class for styling (optional)
+  innerChild.style.marginTop = '20px';
+  innerChild.style.color = 'white';
+  innerChild.style.fontSize = '30px'
+  // Create <p> elements to display each property
+  let nameElement = document.createElement('p');
+  nameElement.textContent = `${feedback.Fname} ${feedback.Lname} (${feedback.username})`;
+
+  let ratingElement = document.createElement('p');
+  ratingElement.textContent = `Overall Rating -> ${feedback.Rating}`;
+  innerChild.style.textAlign = 'left';
+
+  // Append the <p> elements to the <div> element
+  innerChild.appendChild(nameElement);
+  innerChild.appendChild(ratingElement);
+  // Append the <div> element to the feedbackContainer
+  feedbackContainer.appendChild(innerChild);
+}
+        })
+        .catch(fetchError => {
+          console.error('Error fetching feedback data:', fetchError);
+        });
     }
-});
 
-// Stop camera
-stopButton.addEventListener('click', () => {
-    if (stream) {
-        const tracks = stream.getTracks();
-        tracks.forEach(track => track.stop());
-        videoElement.srcObject = null;
-    }
-});
-
-// Capture photo
-captureButton.addEventListener('click', () => {
-  if(stream){
-    const canvas = document.createElement('canvas');
-    canvas.width = videoElement.videoWidth;
-    canvas.height = videoElement.videoHeight;
-    canvas.getContext('2d').drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-    
-    // Convert canvas to data URL
-    const dataURL = canvas.toDataURL('image/png');
-
-    // Get the next character from the charArray
-    const fileName = charArray[iterator];
-    
-    // Increment the iterator for the next capture
-    iterator = (iterator + 1) % charArray.length;
-
-    // Create a temporary anchor element to trigger download
-    const link = document.createElement('a');
-    link.href = dataURL;
-    link.download = `${fileName}.png`; // Filename with the selected character
-    link.style.display = 'none';
-
-    // Append the anchor element to the body and trigger a click event
-    document.body.appendChild(link);
-    link.click();
-
-    // Clean up: remove the anchor element from the DOM
-    document.body.removeChild(link);
-  }
-});
-    </script>
+    fetch()
+</script>
 </body>
-</html>

@@ -29,8 +29,26 @@ const Loginschema = new mongoose.Schema({
     required: true,
   },
 });
+const feedbackSchema = new mongoose.Schema({
+  Fname: {
+    type: String,
+    required: true,
+  },
+  Lname: {
+    type: String,
+    required: true,
+  },
+  username: {
+    type: String,
+    required: true,
+  },
+  Rating: {
+    type: Number,
+    required: true,
+  },
+});
 
-// collection part
 const collection = new mongoose.model("users", Loginschema);
+const collection1 = new mongoose.model("feedback", feedbackSchema);
 
-module.exports = collection;
+module.exports = { collection, collection1 };

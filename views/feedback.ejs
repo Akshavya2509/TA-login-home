@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Video Capture</title>
+    <title>Feedback Form</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -150,7 +150,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto"> <!-- Changed ml-auto to mr-auto -->
                 <li class="nav-item active">
-                    <a class="nav-link" href="http://localhost:5001/homePage">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="http://localhost:5001/homePage?id=<%=id%>">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Link</a>
@@ -179,27 +179,61 @@
     </div>
 </nav>
 <div style="margin-top: 30px;" >
-    <h1 class="animated-text" style="margin-bottom: 50px;">Feedback Form</h1>
-    <p style="color:#999; text-align: left; margin-left: 170px;">Q1. On the scale of 1 - 10, where 1 describes most unlikely and 10 describes most likely, How willing are you to recommend this model to a friend?</p>
-    <div style="display: flex; flex-direction: row; margin-left: 200px; align-items: center; margin-bottom: 20px;">
-        <input type="text" id="q1" style="background-color:#999; border-color: #111;">
-        <button onclick="processValue()">submit</button>
-    </div>
-    <p style="color:#999; text-align: left; margin-left: 170px;">Q2. On the scale of 1 - 10, where 1 describes most unlikely and 10 describes most likely, How willing are you to recommend this model to a friend?</p>
-    <div style="display: flex; flex-direction: row; margin-left: 200px; align-items: center; margin-bottom: 20px;">
-        <input type="text" id="q2" style="background-color:#999; border-color: #111;">
-        <button onclick="processValue()">submit</button>
-    </div> 
-    <p style="color:#999; text-align: left; margin-left: 170px;">Q3. On the scale of 1 - 10, where 1 describes most unlikely and 10 describes most likely, How willing are you to recommend this model to a friend?</p>
-    <div style="display: flex; flex-direction: row; margin-left: 200px; align-items: center; margin-bottom: 20px;">
-        <input type="text" id="q3" style="background-color:#999; border-color: #111;">
-        <button onclick="processValue()">submit</button>
-    </div>
-    
-    <p style="color:#999; text-align: left; margin-left: 170px;">Q4. On the scale of 1 - 10, where 1 describes most unlikely and 10 describes most likely, How willing are you to recommend this model to a friend?</p>
-    <div style="display: flex; flex-direction: row; margin-left: 200px; align-items: center; margin-bottom: 20px;">
-        <input type="text" id="q4" style="background-color:#999; border-color: #111;">
-        <button onclick="processValue()">submit</button>
-    </div>
+        <div class="question-container">
+          <label for="q1">Q1. How likely are you to recommend this model to a friend? (1-10)</label>
+          <input type="number" id="q1" name="q1" min="1" max="10" required>
+        </div>
+  
+        <div class="question-container">
+          <label for="q2">Q2. How likely are you to recommend this model to a friend? (1-10)</label>
+          <input type="number" id="q2" name="q2" min="1" max="10" required>
+        </div>
+  
+        <div class="question-container">
+          <label for="q3">Q3. How likely are you to recommend this model to a friend? (1-10)</label>
+          <input type="number" id="q3" name="q3" min="1" max="10" required>
+        </div>
+  
+        <div class="question-container">
+          <label for="q4">Q4. How likely are you to recommend this model to a friend? (1-10)</label>
+          <input type="number" id="q4" name="q4" min="1" max="10" required>
+        </div>
+  
+        <button onclick="postRequest('<%=id%>')" type="submit">Submit Feedback</button>
+
 </div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+
+function postRequest(id) {
+  const q1 = document.getElementById('q1').value;
+  const q2 = document.getElementById('q2').value;
+  const q3 = document.getElementById('q3').value;
+  const q4 = document.getElementById('q4').value;
+
+  const numQ1 = parseFloat(q1);
+  const numQ2 = parseFloat(q2);
+  const numQ3 = parseFloat(q3);
+  const numQ4 = parseFloat(q4);
+
+  // Calculate the average
+  const ans = (numQ1 + numQ2 + numQ3 + numQ4) / 4;
+  const requestData = { id, ans };
+
+  axios.post('http://localhost:5001/submitFeedback', requestData)
+    .then(response => {
+      console.log('Feedback submitted successfully:', response.data);
+      const responseMessage = document.getElementById('responseMessage');
+      responseMessage.textContent = 'Feedback submitted successfully!';
+      // Optionally, reset the form after successful submission
+      document.getElementById('feedbackForm').reset();
+    })
+    .catch(error => {
+      console.error('Error submitting feedback:', error);
+      const responseMessage = document.getElementById('responseMessage');
+      responseMessage.textContent = 'Error submitting feedback. Please try again.';
+    });
+}
+
+</script>
 </body>
